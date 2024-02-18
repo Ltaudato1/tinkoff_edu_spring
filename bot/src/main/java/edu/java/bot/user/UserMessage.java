@@ -7,17 +7,17 @@ import java.util.List;
 import lombok.Setter;
 
 public class UserMessage {
-    private UserMessage() {
+    public UserMessage() {
 
     }
 
-    @Setter private static TelegramBot bot;
+    @Setter private TelegramBot bot;
 
-    public static void unknownCommand(long chatId) throws Exception {
+    public void unknownCommand(long chatId) throws Exception {
         sendMessage(chatId, "Неизвестная команда. Используйте /help для получения списка команд");
     }
 
-    public static void listCommand(long chatId, List<URL> list) throws Exception {
+    public void listCommand(long chatId, List<URL> list) throws Exception {
         StringBuilder message = new StringBuilder();
 
         for (URL link : list) {
@@ -31,11 +31,11 @@ public class UserMessage {
         }
     }
 
-    public static void invalidArgument(long chatId) throws Exception {
+    public void invalidArgument(long chatId) throws Exception {
         sendMessage(chatId, "Неверный аргумент! Введите /help для помощи");
     }
 
-    public static void helpCommand(long chatId) throws Exception {
+    public void helpCommand(long chatId) throws Exception {
         sendMessage(chatId, "Доступные команды:\n"
             + "/start - начать работу с ботом\n"
             + "/help - вывести окно с командами\n"
@@ -44,27 +44,27 @@ public class UserMessage {
             + "/list - показать список отслеживаемых ссылок");
     }
 
-    public static void successfulAdd(long chatId) throws Exception {
+    public void successfulAdd(long chatId) throws Exception {
         sendMessage(chatId, "Ссылка успешно добавлена!");
     }
 
-    public static void successfulDelete(long chatId) throws Exception {
+    public void successfulDelete(long chatId) throws Exception {
         sendMessage(chatId, "Ссылка успешно удалена!");
     }
 
-    public static void startCommand(long chatId) throws Exception {
+    public void startCommand(long chatId) throws Exception {
         sendMessage(chatId, "Добро пожаловать! Введите /help для помощи или используйте меню");
     }
 
-    public static void alreadyHasThisLink(long chatId) throws Exception {
+    public void alreadyHasThisLink(long chatId) throws Exception {
         sendMessage(chatId, "Такая ссылка уже есть!");
     }
 
-    public static void noSuchLink(long chatId) throws Exception {
+    public void noSuchLink(long chatId) throws Exception {
         sendMessage(chatId, "Такой ссылки нет!");
     }
 
-    private static void sendMessage(long chatId, String message) throws Exception {
+    public void sendMessage(long chatId, String message) throws Exception {
         SendMessage sendMessage = new SendMessage(chatId, message);
 
         try {
