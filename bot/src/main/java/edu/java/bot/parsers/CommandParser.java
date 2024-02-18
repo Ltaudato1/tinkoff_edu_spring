@@ -12,6 +12,10 @@ import static edu.java.bot.user.UserMessage.invalidArgument;
 import static edu.java.bot.user.UserMessage.unknownCommand;
 
 public class CommandParser {
+    private CommandParser() {
+
+    }
+
     public static void parseCommand(User user, String command) throws Exception {
         String[] args = command.split("\\s+");
         if (args.length > 2) {

@@ -1,14 +1,13 @@
 package edu.java.bot;
 
 import com.pengrad.telegrambot.TelegramBot;
-import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Update;
 import edu.java.bot.configuration.ApplicationConfig;
 import edu.java.bot.user.User;
+import edu.java.bot.user.UserMessage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import edu.java.bot.user.UserMessage;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -42,14 +41,6 @@ public class MyBot {
             } catch (Exception e) {
                 return;
             }
-        }
-    }
-
-    public void processCallbackQuery(CallbackQuery callbackQuery) {
-        String command = callbackQuery.data();
-
-        switch (command) {
-
         }
     }
 

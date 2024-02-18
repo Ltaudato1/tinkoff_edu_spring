@@ -13,8 +13,12 @@ import static edu.java.bot.user.UserMessage.successfulDelete;
 import static edu.java.bot.user.UserMessage.unknownCommand;
 
 public class CommandHandler {
+    private CommandHandler() {
+
+    }
+
     public static void handleCommand(User user, UserState currentState, Object argument) throws Exception {
-        switch(currentState) {
+        switch (currentState) {
             case HELP -> helpCommand(user.chatId());
             case START -> startCommand(user.chatId());
             case GET_LIST -> listCommand(user.chatId(), user.trackedList());

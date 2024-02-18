@@ -2,11 +2,15 @@ package edu.java.bot.user;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
-import lombok.Setter;
 import java.net.URL;
 import java.util.List;
+import lombok.Setter;
 
 public class UserMessage {
+    private UserMessage() {
+
+    }
+
     @Setter private static TelegramBot bot;
 
     public static void unknownCommand(long chatId) throws Exception {
@@ -32,12 +36,12 @@ public class UserMessage {
     }
 
     public static void helpCommand(long chatId) throws Exception {
-        sendMessage(chatId, "Доступные команды:\n" +
-            "/start - начать работу с ботом\n" +
-            "/help - вывести окно с командами\n" +
-            "/track <ссылка> - начать отслеживание ссылки\n" +
-            "/untrack <ссылка> - прекратить отслеживание ссылки\n" +
-            "/list - показать список отслеживаемых ссылок");
+        sendMessage(chatId, "Доступные команды:\n"
+            + "/start - начать работу с ботом\n"
+            + "/help - вывести окно с командами\n"
+            + "/track <ссылка> - начать отслеживание ссылки\n"
+            + "/untrack <ссылка> - прекратить отслеживание ссылки\n"
+            + "/list - показать список отслеживаемых ссылок");
     }
 
     public static void successfulAdd(long chatId) throws Exception {

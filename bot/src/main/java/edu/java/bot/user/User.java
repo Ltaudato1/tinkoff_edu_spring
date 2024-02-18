@@ -7,6 +7,7 @@ public record User(long chatId, List<URL> trackedList) {
     public void removeLink(URL url) {
         trackedList.remove(url);
     }
+
     public void addLink(URL url) {
         trackedList.add(url);
     }
