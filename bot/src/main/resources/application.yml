@@ -8,6 +8,6 @@ spring:
     time-zone: UTC
 
 server:
-  port: 0
+  port: 8090
 logging:
   config: classpath:log4j2-plain.xml

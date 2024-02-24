@@ -3,31 +3,31 @@ package edu.java.bot;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import edu.java.bot.configuration.ApplicationConfig;
-import edu.java.bot.handlers.CommandHandler;
+import edu.java.bot.handlers.Invoker;
 import edu.java.bot.parsers.CommandParser;
 import edu.java.bot.user.User;
 import edu.java.bot.user.UserMessage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@Log4j2
 public class MyBot {
     @Getter private final TelegramBot bot;
     private final Map<Long, User> users;
     ApplicationConfig applicationConfig;
-    private static final Logger LOGGER = Logger.getLogger(MyBot.class.getName());
     private final CommandParser commandParser;
 
     @Autowired
     public MyBot(ApplicationConfig applicationConfig) {
         UserMessage userMessage = new UserMessage();
-        CommandHandler commandHandler = new CommandHandler(userMessage);
-        commandParser = new CommandParser(commandHandler);
+        Invoker invoker = new Invoker(userMessage);
+        commandParser = new CommandParser(userMessage, invoker);
 
         bot = new TelegramBot(applicationConfig.telegramToken());
         users = new HashMap<>();
@@ -47,7 +47,7 @@ public class MyBot {
             try {
                 commandParser.parseCommand(chatId, users.get(chatId), message);
             } catch (Exception e) {
-                LOGGER.warning("Error while sending message to user");
+                log.error("error while getting update");
             }
         }
     }

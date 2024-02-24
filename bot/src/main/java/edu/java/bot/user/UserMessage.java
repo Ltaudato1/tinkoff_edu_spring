@@ -19,15 +19,13 @@ import lombok.extern.log4j.Log4j2;
     }
 
     public void listCommand(long chatId, List<URL> list) {
-        StringBuilder message = new StringBuilder();
-
-        for (URL link : list) {
-            message.append(link.toString()).append("\n");
-        }
-
-        if (message.isEmpty()) {
+        if (list.isEmpty()) {
             sendMessage(chatId, "Список отслеживаемых ссылок пуст.");
         } else {
+            StringBuilder message = new StringBuilder();
+            for (URL link : list) {
+                message.append(link.toString()).append("\n");
+            }
             sendMessage(chatId, "Список отслеживаемых ссылок:\n" + message);
         }
     }
@@ -39,9 +37,12 @@ import lombok.extern.log4j.Log4j2;
     public void helpCommand(long chatId) {
         sendMessage(
             chatId,
-            "Доступные команды:\n" + "/start - начать работу с ботом\n" + "/help - вывести окно с командами\n" +
-                "/track <ссылка> - начать отслеживание ссылки\n" +
-                "/untrack <ссылка> - прекратить отслеживание ссылки\n" + "/list - показать список отслеживаемых ссылок"
+            "Доступные команды:\n"
+                + "/start - начать работу с ботом\n"
+                + "/help - вывести окно с командами\n"
+                + "/track <ссылка> - начать отслеживание ссылки\n"
+                + "/untrack <ссылка> - прекратить отслеживание ссылки\n"
+                + "/list - показать список отслеживаемых ссылок"
         );
     }
 

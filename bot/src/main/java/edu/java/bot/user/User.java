@@ -5,6 +5,7 @@ import java.util.List;
 
 public class User {
     private final List<URL> trackedList;
+
     public User(List<URL> trackedList) {
         this.trackedList = trackedList;
     }
