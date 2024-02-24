@@ -9,7 +9,6 @@ import org.mockito.Mockito;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 import static edu.java.bot.handlers.UserState.ADD_LINK;
-import static edu.java.bot.handlers.UserState.INVALID_ARGS;
 import static edu.java.bot.handlers.UserState.REMOVE_LINK;
 import static edu.java.bot.handlers.UserState.UNKNOWN_COMMAND;
 import static edu.java.bot.parsers.LinkParser.stringToUrl;
@@ -25,53 +24,57 @@ public class ParserTest {
     }
 
     @Test
-    void URLParserTestWithInvalidLink() throws MalformedURLException {
+    void URLParserTestWithInvalidLink() {
         String invalidUrl = "abacaba";
         AssertJUnit.assertNull(LinkParser.stringToUrl(invalidUrl));
     }
 
     @Test
-    void commandParserTestWithValidMessage() throws Exception {
+    void commandParserTestWithValidMessage() {
         String message = "/track https://abacaba.com";
 
         CommandHandler commandHandler = Mockito.mock(CommandHandler.class);
         CommandParser commandParser = new CommandParser(commandHandler);
-        User user = new User(228, new ArrayList<>());
+        User user = new User(new ArrayList<>());
+        Long chatId = 228L;
 
-        Mockito.doNothing().when(commandHandler).handleCommand(user, ADD_LINK, stringToUrl("https://abacaba.com"));
+        Mockito.doNothing().when(commandHandler)
+            .handleCommand(chatId, user, ADD_LINK, stringToUrl("https://abacaba.com"));
 
-        commandParser.parseCommand(user, message);
+        commandParser.parseCommand(chatId, user, message);
 
-        Mockito.verify(commandHandler).handleCommand(user, ADD_LINK, stringToUrl("https://abacaba.com"));
+        Mockito.verify(commandHandler).handleCommand(chatId, user, ADD_LINK, stringToUrl("https://abacaba.com"));
     }
 
     @Test
-    void commandParserTestWithinvalidCommand() throws Exception {
+    void commandParserTestWithinvalidCommand() {
         String message = "/message";
 
         CommandHandler commandHandler = Mockito.mock(CommandHandler.class);
         CommandParser commandParser = new CommandParser(commandHandler);
-        User user = new User(228, new ArrayList<>());
+        User user = new User(new ArrayList<>());
+        Long chatId = 228L;
 
-        Mockito.doNothing().when(commandHandler).handleCommand(user, UNKNOWN_COMMAND, null);
+        Mockito.doNothing().when(commandHandler).handleCommand(chatId, user, UNKNOWN_COMMAND, null);
 
-        commandParser.parseCommand(user, message);
+        commandParser.parseCommand(chatId, user, message);
 
-        Mockito.verify(commandHandler).handleCommand(user, UNKNOWN_COMMAND,null);
+        Mockito.verify(commandHandler).handleCommand(chatId, user, UNKNOWN_COMMAND, null);
     }
 
     @Test
-    void commandParserTestWithinvalidArgument() throws Exception {
+    void commandParserTestWithinvalidArgument() {
         String message = "/untrack foobar";
 
         CommandHandler commandHandler = Mockito.mock(CommandHandler.class);
         CommandParser commandParser = new CommandParser(commandHandler);
-        User user = new User(228, new ArrayList<>());
+        User user = new User(new ArrayList<>());
+        Long chatId = 228L;
 
-        Mockito.doNothing().when(commandHandler).handleCommand(user, REMOVE_LINK, null);
+        Mockito.doNothing().when(commandHandler).handleCommand(chatId, user, REMOVE_LINK, null);
 
-        commandParser.parseCommand(user, message);
+        commandParser.parseCommand(chatId, user, message);
 
-        Mockito.verify(commandHandler).handleCommand(user, REMOVE_LINK,null);
+        Mockito.verify(commandHandler).handleCommand(chatId, user, REMOVE_LINK, null);
     }
 }

@@ -5,19 +5,20 @@ import com.pengrad.telegrambot.request.SendMessage;
 import java.net.URL;
 import java.util.List;
 import lombok.Setter;
+import lombok.extern.log4j.Log4j2;
 
-public class UserMessage {
+@Log4j2 public class UserMessage {
     public UserMessage() {
 
     }
 
     @Setter private TelegramBot bot;
 
-    public void unknownCommand(long chatId) throws Exception {
+    public void unknownCommand(long chatId) {
         sendMessage(chatId, "Неизвестная команда. Используйте /help для получения списка команд");
     }
 
-    public void listCommand(long chatId, List<URL> list) throws Exception {
+    public void listCommand(long chatId, List<URL> list) {
         StringBuilder message = new StringBuilder();
 
         for (URL link : list) {
@@ -27,50 +28,50 @@ public class UserMessage {
         if (message.isEmpty()) {
             sendMessage(chatId, "Список отслеживаемых ссылок пуст.");
         } else {
-            sendMessage(chatId, "Список отслеживаемых ссылок:\n" + message.toString());
+            sendMessage(chatId, "Список отслеживаемых ссылок:\n" + message);
         }
     }
 
-    public void invalidArgument(long chatId) throws Exception {
+    public void invalidArgument(long chatId) {
         sendMessage(chatId, "Неверный аргумент! Введите /help для помощи");
     }
 
-    public void helpCommand(long chatId) throws Exception {
-        sendMessage(chatId, "Доступные команды:\n"
-            + "/start - начать работу с ботом\n"
-            + "/help - вывести окно с командами\n"
-            + "/track <ссылка> - начать отслеживание ссылки\n"
-            + "/untrack <ссылка> - прекратить отслеживание ссылки\n"
-            + "/list - показать список отслеживаемых ссылок");
+    public void helpCommand(long chatId) {
+        sendMessage(
+            chatId,
+            "Доступные команды:\n" + "/start - начать работу с ботом\n" + "/help - вывести окно с командами\n" +
+                "/track <ссылка> - начать отслеживание ссылки\n" +
+                "/untrack <ссылка> - прекратить отслеживание ссылки\n" + "/list - показать список отслеживаемых ссылок"
+        );
     }
 
-    public void successfulAdd(long chatId) throws Exception {
+    public void successfulAdd(long chatId) {
         sendMessage(chatId, "Ссылка успешно добавлена!");
     }
 
-    public void successfulDelete(long chatId) throws Exception {
+    public void successfulDelete(long chatId) {
         sendMessage(chatId, "Ссылка успешно удалена!");
     }
 
-    public void startCommand(long chatId) throws Exception {
+    public void startCommand(long chatId) {
         sendMessage(chatId, "Добро пожаловать! Введите /help для помощи или используйте меню");
     }
 
-    public void alreadyHasThisLink(long chatId) throws Exception {
+    public void alreadyHasThisLink(long chatId) {
         sendMessage(chatId, "Такая ссылка уже есть!");
     }
 
-    public void noSuchLink(long chatId) throws Exception {
+    public void noSuchLink(long chatId) {
         sendMessage(chatId, "Такой ссылки нет!");
     }
 
-    public void sendMessage(long chatId, String message) throws Exception {
+    public void sendMessage(long chatId, String message) {
         SendMessage sendMessage = new SendMessage(chatId, message);
 
         try {
             bot.execute(sendMessage);
         } catch (Exception e) {
-            throw new Exception("failed to send message");
+            log.error("an error occurred while sending message in chat with ID=" + chatId);
         }
     }
 }

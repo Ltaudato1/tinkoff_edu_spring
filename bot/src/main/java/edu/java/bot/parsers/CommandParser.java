@@ -18,30 +18,30 @@ public class CommandParser {
         this.commandHandler = commandHandler;
     }
 
-    public void parseCommand(User user, String command) throws Exception {
+    public void parseCommand(Long chatId, User user, String command) {
         String[] args = command.split("\\s+");
         if (args.length > 2) {
-            commandHandler.handleCommand(user, INVALID_ARGS, null);
+            commandHandler.handleCommand(chatId, user, INVALID_ARGS, null);
         } else {
             switch (args[0]) {
-                case "/start" -> commandHandler.handleCommand(user, START, null);
+                case "/start" -> commandHandler.handleCommand(chatId, user, START, null);
                 case "/track" -> {
                     if (args.length != 2) {
-                        commandHandler.handleCommand(user, INVALID_ARGS, null);
+                        commandHandler.handleCommand(chatId, user, INVALID_ARGS, null);
                     } else {
-                        commandHandler.handleCommand(user, ADD_LINK, stringToUrl(args[1]));
+                        commandHandler.handleCommand(chatId, user, ADD_LINK, stringToUrl(args[1]));
                     }
                 }
                 case "/untrack" -> {
                     if (args.length != 2) {
-                        commandHandler.handleCommand(user, INVALID_ARGS, null);
+                        commandHandler.handleCommand(chatId, user, INVALID_ARGS, null);
                     } else {
-                        commandHandler.handleCommand(user, REMOVE_LINK, stringToUrl(args[1]));
+                        commandHandler.handleCommand(chatId, user, REMOVE_LINK, stringToUrl(args[1]));
                     }
                 }
-                case "/help" -> commandHandler.handleCommand(user, HELP, null);
-                case "/list" -> commandHandler.handleCommand(user, GET_LIST, null);
-                default -> commandHandler.handleCommand(user, UNKNOWN_COMMAND, null);
+                case "/help" -> commandHandler.handleCommand(chatId, user, HELP, null);
+                case "/list" -> commandHandler.handleCommand(chatId, user, GET_LIST, null);
+                default -> commandHandler.handleCommand(chatId, user, UNKNOWN_COMMAND, null);
             }
         }
     }

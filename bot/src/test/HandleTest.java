@@ -21,105 +21,111 @@ import static edu.java.bot.handlers.UserState.START;
 import static edu.java.bot.handlers.UserState.UNKNOWN_COMMAND;
 import static edu.java.bot.parsers.LinkParser.stringToUrl;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS) public class HandleTest {
-    Stream<Arguments> provideData() {
-        return Stream.of(
-            Arguments.of(HELP),
-            Arguments.of(START),
-            Arguments.of(INVALID_ARGS),
-            Arguments.of(UNKNOWN_COMMAND)
-        );
-    }
-
+public class HandleTest {
     @ParameterizedTest
     @MethodSource("provideData")
-    void testForJustTextCommand(UserState currentState) throws Exception {
-        User user = new User(228, new ArrayList<>());
+    void testForJustTextCommand(UserState currentState) {
+        User user = new User(new ArrayList<>());
+        Long chatId = 228L;
         UserMessage userMessage = Mockito.mock(UserMessage.class);
         CommandHandler commandHandler = new CommandHandler(userMessage);
 
-        Mockito.doNothing().when(userMessage).helpCommand(user.chatId());
-        Mockito.doNothing().when(userMessage).startCommand(user.chatId());
-        Mockito.doNothing().when(userMessage).invalidArgument(user.chatId());
-        Mockito.doNothing().when(userMessage).unknownCommand(user.chatId());
+        Mockito.doNothing().when(userMessage).helpCommand(chatId);
+        Mockito.doNothing().when(userMessage).startCommand(chatId);
+        Mockito.doNothing().when(userMessage).invalidArgument(chatId);
+        Mockito.doNothing().when(userMessage).unknownCommand(chatId);
 
-        commandHandler.handleCommand(user, currentState, null);
+        commandHandler.handleCommand(chatId, user, currentState, null);
 
         switch (currentState) {
-            case HELP -> Mockito.verify(userMessage).helpCommand(user.chatId());
-            case START -> Mockito.verify(userMessage).startCommand(user.chatId());
-            case INVALID_ARGS -> Mockito.verify(userMessage).invalidArgument(user.chatId());
-            case UNKNOWN_COMMAND -> Mockito.verify(userMessage).unknownCommand(user.chatId());
+            case HELP -> Mockito.verify(userMessage).helpCommand(chatId);
+            case START -> Mockito.verify(userMessage).startCommand(chatId);
+            case INVALID_ARGS -> Mockito.verify(userMessage).invalidArgument(chatId);
+            case UNKNOWN_COMMAND -> Mockito.verify(userMessage).unknownCommand(chatId);
         }
     }
 
     @Test
-    void trackCommandHandle() throws Exception {
-        User user = new User(228, new ArrayList<>());
+    void trackCommandHandle() {
+        User user = new User(new ArrayList<>());
+        Long chatId = 228L;
         URL argument = stringToUrl("https://example.com");
 
         UserMessage userMessage = Mockito.mock(UserMessage.class);
         CommandHandler commandHandler = new CommandHandler(userMessage);
-        Mockito.doNothing().when(userMessage).successfulAdd(user.chatId());
+        Mockito.doNothing().when(userMessage).successfulAdd(chatId);
 
-        commandHandler.handleCommand(user, ADD_LINK, argument);
+        commandHandler.handleCommand(chatId, user, ADD_LINK, argument);
         Assertions.assertFalse(user.trackedList().isEmpty());
-        Mockito.verify(userMessage).successfulAdd(user.chatId());
+        Mockito.verify(userMessage).successfulAdd(chatId);
     }
 
     @Test
-    void untrackCommandHandle() throws Exception {
-        User user = new User(228, new ArrayList<>());
+    void untrackCommandHandle() {
+        User user = new User(new ArrayList<>());
+        Long chatId = 228L;
         URL argument = stringToUrl("https://example.com");
         user.addLink(argument);
 
         UserMessage userMessage = Mockito.mock(UserMessage.class);
         CommandHandler commandHandler = new CommandHandler(userMessage);
-        Mockito.doNothing().when(userMessage).successfulDelete(user.chatId());
+        Mockito.doNothing().when(userMessage).successfulDelete(chatId);
 
-        commandHandler.handleCommand(user, REMOVE_LINK, argument);
+        commandHandler.handleCommand(chatId, user, REMOVE_LINK, argument);
         Assertions.assertTrue(user.trackedList().isEmpty());
-        Mockito.verify(userMessage).successfulDelete(user.chatId());
+        Mockito.verify(userMessage).successfulDelete(chatId);
     }
 
     @Test
-    void noSuchLinkTest() throws Exception {
-        User user = new User(228, new ArrayList<>());
+    void noSuchLinkTest() {
+        User user = new User(new ArrayList<>());
+        Long chatId = 228L;
         URL argument = stringToUrl("https://example.com");
 
         UserMessage userMessage = Mockito.mock(UserMessage.class);
         CommandHandler commandHandler = new CommandHandler(userMessage);
-        Mockito.doNothing().when(userMessage).noSuchLink(user.chatId());
+        Mockito.doNothing().when(userMessage).noSuchLink(chatId);
 
-        commandHandler.handleCommand(user, REMOVE_LINK, argument);
+        commandHandler.handleCommand(chatId, user, REMOVE_LINK, argument);
         Assertions.assertTrue(user.trackedList().isEmpty());
-        Mockito.verify(userMessage).noSuchLink(user.chatId());
+        Mockito.verify(userMessage).noSuchLink(chatId);
     }
 
     @Test
-    void emptyListCommandTest() throws Exception {
-        User user = new User(228, new ArrayList<>());
+    void emptyListCommandTest() {
+        User user = new User(new ArrayList<>());
+        Long chatId = 228L;
         UserMessage userMessage = Mockito.mock(UserMessage.class);
         CommandHandler commandHandler = new CommandHandler(userMessage);
 
-        Mockito.doNothing().when(userMessage).listCommand(user.chatId(), user.trackedList());
+        Mockito.doNothing().when(userMessage).listCommand(chatId, user.trackedList());
 
-        commandHandler.handleCommand(user, GET_LIST, null);
-        Mockito.verify(userMessage).listCommand(user.chatId(), user.trackedList());
+        commandHandler.handleCommand(chatId, user, GET_LIST, null);
+        Mockito.verify(userMessage).listCommand(chatId, user.trackedList());
     }
 
     @Test
-    void listCommandTest() throws Exception {
-        User user = new User(228, new ArrayList<>());
+    void listCommandTest() {
+        User user = new User(new ArrayList<>());
+        Long chatId = 228L;
         UserMessage userMessage = Mockito.mock(UserMessage.class);
         CommandHandler commandHandler = new CommandHandler(userMessage);
 
         String link = "https://example.com";
         user.addLink(stringToUrl(link));
 
-        Mockito.doNothing().when(userMessage).listCommand(user.chatId(), user.trackedList());
+        Mockito.doNothing().when(userMessage).listCommand(chatId, user.trackedList());
 
-        commandHandler.handleCommand(user, GET_LIST, null);
-        Mockito.verify(userMessage).listCommand(user.chatId(), user.trackedList());
+        commandHandler.handleCommand(chatId, user, GET_LIST, null);
+        Mockito.verify(userMessage).listCommand(chatId, user.trackedList());
+    }
+
+    private static Stream<Arguments> provideData() {
+        return Stream.of(
+            Arguments.of(HELP),
+            Arguments.of(START),
+            Arguments.of(INVALID_ARGS),
+            Arguments.of(UNKNOWN_COMMAND)
+        );
     }
 }

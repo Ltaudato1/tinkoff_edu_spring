@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MyBot {
     @Getter private final TelegramBot bot;
-    Map<Long, User> userList;
+    private final Map<Long, User> users;
     ApplicationConfig applicationConfig;
     private static final Logger LOGGER = Logger.getLogger(MyBot.class.getName());
     private final CommandParser commandParser;
@@ -30,7 +30,7 @@ public class MyBot {
         commandParser = new CommandParser(commandHandler);
 
         bot = new TelegramBot(applicationConfig.telegramToken());
-        userList = new HashMap<>();
+        users = new HashMap<>();
         this.applicationConfig = applicationConfig;
         userMessage.setBot(bot);
     }
@@ -40,19 +40,19 @@ public class MyBot {
             long chatId = update.message().chat().id();
             String message = update.message().text();
 
-            if (!userList.containsKey(chatId)) {
-                addUser(new User(chatId, new ArrayList<>()));
+            if (!users.containsKey(chatId)) {
+                addUser(chatId, new User(new ArrayList<>()));
             }
 
             try {
-                commandParser.parseCommand(userList.get(chatId), message);
+                commandParser.parseCommand(chatId, users.get(chatId), message);
             } catch (Exception e) {
                 LOGGER.warning("Error while sending message to user");
             }
         }
     }
 
-    public void addUser(User user) {
-        userList.put(user.chatId(), user);
+    public void addUser(Long chatId, User user) {
+        users.put(chatId, user);
     }
 }
