@@ -33,7 +33,7 @@ public class GitHubClientIntegrationTest {
 
         List<GitHubEvent> events = gitHubClient.getRepositoryEvents(owner, repo, since, until);
 
-        Assertions.assertEquals("35972480434", events.get(0).getId());
+        Assertions.assertEquals("35987408135", events.get(0).getId());
         Assertions.assertEquals("PushEvent", events.get(0).getType());
     }
 
