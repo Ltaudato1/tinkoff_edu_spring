@@ -25,7 +25,7 @@ public class GitHubClientIntegrationTest {
 
     @Test
     void testGetRepositoryEvents() {
-        // События в моём репозитории за 24 февраля (ок. 30)
+        // События в моём репозитории за 24 февраля (ок. 30, везде - PushEvent)
         String owner = "Ltaudato1";
         String repo = "tinkoff_edu_spring";
         OffsetDateTime since = OffsetDateTime.parse("2024-02-24T00:00:00Z");
@@ -33,7 +33,7 @@ public class GitHubClientIntegrationTest {
 
         List<GitHubEvent> events = gitHubClient.getRepositoryEvents(owner, repo, since, until);
 
-        Assertions.assertEquals("35987408135", events.get(0).getId());
+        Assertions.assertEquals(30, events.size());
         Assertions.assertEquals("PushEvent", events.get(0).getType());
     }
 
