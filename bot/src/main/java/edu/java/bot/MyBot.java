@@ -1,7 +1,9 @@
 package edu.java.bot;
 
 import com.pengrad.telegrambot.TelegramBot;
+import com.pengrad.telegrambot.model.BotCommand;
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.request.SetMyCommands;
 import edu.java.bot.configuration.ApplicationConfig;
 import edu.java.bot.handlers.Invoker;
 import edu.java.bot.parsers.CommandParser;
@@ -33,6 +35,16 @@ public class MyBot {
         users = new HashMap<>();
         this.applicationConfig = applicationConfig;
         userMessage.setBot(bot);
+
+        bot.execute(
+            new SetMyCommands(
+                new BotCommand("start", "Начать работу с ботом"),
+                new BotCommand("help", "Вывести список команд"),
+                new BotCommand("list", "Вывести список отслеживаемых ссылок"),
+                new BotCommand("track", "Начать отслеживать ссылку"),
+                new BotCommand("untrack", "Прекратить отслеживать ссылку")
+            )
+        );
     }
 
     public void processUpdate(Update update) {
