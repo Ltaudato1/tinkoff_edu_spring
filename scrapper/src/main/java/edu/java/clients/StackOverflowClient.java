@@ -1,10 +1,16 @@
 package edu.java.clients;
 
 import java.time.OffsetDateTime;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Component
+@RestController
+@RequestMapping("/api/questions")
 public class StackOverflowClient {
 
     private final WebClient webClient;
@@ -13,6 +19,7 @@ public class StackOverflowClient {
         this.webClient = webClientBuilder.baseUrl(baseUrl).build();
     }
 
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public StackOverflowUpdate getQuestionUpdates(String questionId, OffsetDateTime since, OffsetDateTime until) {
         return webClient.get()
             .uri("/questions/{questionId}/timeline?since={since}&until={until}&site=stackoverflow",

@@ -4,14 +4,15 @@ import edu.java.bot.handlers.Invoker;
 import edu.java.bot.parsers.CommandParser;
 import edu.java.bot.parsers.LinkParser;
 import edu.java.bot.user.User;
+import edu.java.bot.user.UserMessage;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import edu.java.bot.user.UserMessage;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.testng.AssertJUnit;
-import org.testng.annotations.Test;
-import static edu.java.bot.parsers.LinkParser.stringToUrl;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class ParserTest {
 
@@ -19,14 +20,14 @@ public class ParserTest {
     void URLParserTestWithValidLink() throws MalformedURLException {
         String validUrl = "https://example.com";
         URL url = new URL("https://example.com");
-        AssertJUnit.assertNotNull(url);
-        AssertJUnit.assertEquals(url, LinkParser.stringToUrl(validUrl));
+        assertNotNull(url);
+        assertEquals(url, LinkParser.stringToUrl(validUrl));
     }
 
     @Test
     void URLParserTestWithInvalidLink() {
         String invalidUrl = "abacaba";
-        AssertJUnit.assertNull(LinkParser.stringToUrl(invalidUrl));
+        assertNull(LinkParser.stringToUrl(invalidUrl));
     }
 
     @Test

@@ -1,14 +1,11 @@
 package edu.java.bot;
 
 import com.pengrad.telegrambot.TelegramBot;
-import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.request.SendMessage;
-import com.pengrad.telegrambot.response.SendResponse;
 import edu.java.bot.user.UserMessage;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.testng.annotations.Test;
 import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.argThat;
 
 public class MessageTest {
     @Test

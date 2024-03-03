@@ -7,11 +7,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
-import org.testng.annotations.Test;
 import static edu.java.bot.parsers.LinkParser.stringToUrl;
 
 public class HandleTest {
