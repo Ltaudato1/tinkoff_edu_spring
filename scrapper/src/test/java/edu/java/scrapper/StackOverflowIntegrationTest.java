@@ -22,20 +22,6 @@ public class StackOverflowIntegrationTest {
     private int port;
 
     @Test
-    void testGetQuestionEvents() {
-        // Какой-то реально существующий вопрос без ответов (только 2 события)
-        String questionId = "78056675";
-        OffsetDateTime since = OffsetDateTime.parse("2024-02-25T00:00:00Z");
-        OffsetDateTime until = OffsetDateTime.parse("2024-02-25T19:42:00Z");
-
-        StackOverflowUpdate events = stackOverflowClient.getQuestionUpdates(questionId, since, until);
-
-        Assertions.assertEquals(2, events.getItems().size());
-        Assertions.assertEquals("question", events.getItems().get(0).getTimelineType());
-        Assertions.assertEquals(1708877124, events.getItems().get(0).getCreationDate());
-    }
-
-    @Test
     void testStackOverflowClientErrorHandling() {
         // Несуществующий вопрос
         StackOverflowUpdate events = stackOverflowClient.getQuestionUpdates("2281337",

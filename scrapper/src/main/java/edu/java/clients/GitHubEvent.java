@@ -13,4 +13,5 @@ public class GitHubEvent {
 
     @JsonProperty("created_at")
     @Getter private OffsetDateTime createdAt;
+
 }
