@@ -27,7 +27,7 @@ public class GitHubClient {
         OffsetDateTime until
     ) {
         return webClient.get()
-            .uri("/repos/{owner}/{repo}/events?since={since}&until={until}", owner, repo, since, until)
+            .uri("/api/repos/{owner}/{repo}/events?since={since}&until={until}", owner, repo, since, until)
             .retrieve()
             .bodyToFlux(GitHubEvent.class)
             .collectList()
