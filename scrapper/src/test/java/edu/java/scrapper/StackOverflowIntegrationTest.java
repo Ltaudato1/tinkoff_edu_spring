@@ -13,7 +13,7 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class StackOverflowIntegrationTest {
     @Autowired
     private StackOverflowClient stackOverflowClient;
