@@ -12,6 +12,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Component
 @RestController
 @RequestMapping("/api/repos")
+@SuppressWarnings("MultipleStringLiterals")
 public class GitHubClient {
     private final WebClient webClient;
 
@@ -32,6 +33,18 @@ public class GitHubClient {
             .bodyToFlux(GitHubEvent.class)
             .collectList()
             .block();
+    }
+
+    public static String getOwnerFromLink(String link) {
+        int startIndex = link.indexOf("/repos/") + "/repos/".length();
+        int endIndex = link.indexOf("/", startIndex);
+        return link.substring(startIndex, endIndex);
+    }
+
+    public static String getRepoFromLink(String link) {
+        int startIndex = link.indexOf("/repos/") + "/repos/".length();
+        int endIndex = link.indexOf("/events", startIndex);
+        return link.substring(endIndex + 1);
     }
 
 }

@@ -1,5 +1,6 @@
 package edu.java.dto;
 
+import java.time.OffsetDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -8,4 +9,5 @@ import lombok.Getter;
 public class LinkResponse {
     private Long id;
     private String url;
+    private OffsetDateTime lastUpdateTime;
 }

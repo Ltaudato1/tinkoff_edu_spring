@@ -7,12 +7,13 @@ import java.util.List;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 
-@Log4j2 public class UserMessage {
+@Log4j2
+public class UserMessage {
     public UserMessage() {
 
     }
 
-    @Setter private TelegramBot bot;
+    @Setter private static TelegramBot bot;
 
     public void unknownCommand(long chatId) {
         sendMessage(chatId, "Неизвестная команда. Используйте /help для получения списка команд");
@@ -64,6 +65,17 @@ import lombok.extern.log4j.Log4j2;
 
     public void noSuchLink(long chatId) {
         sendMessage(chatId, "Такой ссылки нет!");
+    }
+
+    @SuppressWarnings("MultipleStringLiterals")
+    public static void updateMessage(long chatId, String url) {
+        SendMessage sendMessage = new SendMessage(chatId, "Есть обновление по ссылке" + url);
+
+        try {
+            bot.execute(sendMessage);
+        } catch (Exception e) {
+            log.error("an error occurred while sending message in chat with ID=" + chatId);
+        }
     }
 
     public void sendMessage(long chatId, String message) {

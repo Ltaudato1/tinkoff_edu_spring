@@ -20,7 +20,6 @@ public abstract class IntegrationTest {
             .withPassword("${POSTGRES_PASSWORD}");
         POSTGRES.start();
 
-        // Запустите миграции
         try {
             runMigrations(POSTGRES);
         } catch (Exception e) {

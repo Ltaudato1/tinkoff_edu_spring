@@ -11,6 +11,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Component
 @RestController
 @RequestMapping("/api/questions")
+@SuppressWarnings("MultipleStringLiterals")
 public class StackOverflowClient {
 
     private final WebClient webClient;
@@ -30,6 +31,12 @@ public class StackOverflowClient {
             .collectList()
             .block()
             .get(0);
+    }
+
+    public static String getQuestionIdFromLink(String link) {
+        int startIndex = link.indexOf("/questions/") + "/questions/".length();
+        int endIndex = link.indexOf("/", startIndex);
+        return link.substring(startIndex, endIndex);
     }
 }
 
