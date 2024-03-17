@@ -1,11 +1,12 @@
 package edu.java.dto;
 
-import java.net.URL;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 @AllArgsConstructor
 @Getter
-public class AddLinkRequest {
-    private URL link;
+@Setter
+public class ChatResponse {
+    private Long id;
 }

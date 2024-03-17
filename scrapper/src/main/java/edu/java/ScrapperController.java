@@ -1,7 +1,12 @@
 package edu.java;
 
-import edu.java.dto.AddLinkRequest;
+import edu.java.dto.LinkUpdateRequest;
+import edu.java.dto.RegisterChatRequest;
+import edu.java.service.ChatService;
+import edu.java.service.LinkService;
 import java.net.URL;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,10 +20,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/scrapper")
 public class ScrapperController {
+    private final LinkService linkService;
+    private final ChatService chatService;
+
+    @Autowired
+    public ScrapperController(LinkService linkService, ChatService chatService) {
+        this.linkService = linkService;
+        this.chatService = chatService;
+    }
+
     @PostMapping("/tg-chat/{id}")
-    public ResponseEntity<String> registerChat(@PathVariable Long id) {
+    public ResponseEntity<String> registerChat(@RequestBody Long id) {
         try {
-            // Логика регистрации чата
+            chatService.registerChat(new RegisterChatRequest(id));
             return ResponseEntity.ok("Chat was successfully registered");
         } catch (Exception e) {
             throw e;
@@ -27,9 +41,8 @@ public class ScrapperController {
 
     @DeleteMapping("/tg-chat/{id}")
     public ResponseEntity<String> deleteChat(@PathVariable Long id) {
-        // Проверка на существование чата
         try {
-            // Логика удаления чата
+            chatService.deleteChat(id);
             return ResponseEntity.ok("Chat was successfully deleted");
         } catch (Exception e) {
             throw e;
@@ -37,9 +50,9 @@ public class ScrapperController {
     }
 
     @GetMapping("/links")
-    public ResponseEntity<String> getLinks(@RequestHeader("Tg-Chat-Id") Long tgChatId) {
+    public ResponseEntity<String> getAllLinks(@RequestHeader("Tg-Chat-Id") Long tgChatId) {
         try {
-            // Логика доставания ссылок из БД
+            linkService.getAllLinks();
             return ResponseEntity.ok("links were successfully got");
         } catch (Exception e) {
             throw e;
@@ -48,12 +61,12 @@ public class ScrapperController {
 
     @PostMapping("/links")
     public ResponseEntity<String> addLink(
-        @RequestHeader("Tg-Chat-Id") Long tgChatId,
+        @RequestHeader("Tg-Chat-Id") List<Long> tgChatIds,
         @RequestBody URL url
     ) {
         try {
-            AddLinkRequest addLinkRequest = new AddLinkRequest(url);
-            // Логика добавления ссылки
+            LinkUpdateRequest addLinkRequest = new LinkUpdateRequest(url.toString(), tgChatIds);
+            linkService.addLink(addLinkRequest);
             return ResponseEntity.ok("Link was successfully added");
         } catch (Exception e) {
             throw e;
