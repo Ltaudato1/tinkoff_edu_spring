@@ -1,4 +1,4 @@
-package edu.java.service.jdbc;
+package edu.java.service.jpa;
 
 import edu.java.BotClient;
 import edu.java.clients.GitHubClient;
@@ -9,26 +9,29 @@ import edu.java.dto.LinkResponse;
 import edu.java.dto.LinkUpdateRequest;
 import edu.java.service.LinkService;
 import edu.java.service.LinkUpdateService;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.time.OffsetDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 
-public class JdbcLinkUpdateService implements LinkUpdateService {
-    private final JdbcTemplate jdbcTemplate;
+public class JpaLinkUpdateService implements LinkUpdateService {
+
     private final LinkService linksService;
     private final GitHubClient gitHubClient;
     private final StackOverflowClient stackOverflowClient;
     private final BotClient botClient;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Autowired
-    public JdbcLinkUpdateService(
-        JdbcTemplate jdbcTemplate,
-        LinkService linksService, GitHubClient gitHubClient,
+    public JpaLinkUpdateService(
+        LinkService linksService,
+        GitHubClient gitHubClient,
         StackOverflowClient stackOverflowClient,
         BotClient botClient
     ) {
-        this.jdbcTemplate = jdbcTemplate;
         this.linksService = linksService;
         this.gitHubClient = gitHubClient;
         this.stackOverflowClient = stackOverflowClient;
@@ -39,8 +42,11 @@ public class JdbcLinkUpdateService implements LinkUpdateService {
     public int update(Long linkId) {
         OffsetDateTime currentTime = OffsetDateTime.now();
 
-        String sql = "UPDATE links SET last_update_time = ? WHERE id = ?";
-        return jdbcTemplate.update(sql, currentTime, linkId);
+        String sql = "UPDATE links SET last_update_time = :time WHERE id = :linkId";
+        return entityManager.createNativeQuery(sql)
+            .setParameter("time", currentTime)
+            .setParameter("linkId", linkId)
+            .executeUpdate();
     }
 
     @Override

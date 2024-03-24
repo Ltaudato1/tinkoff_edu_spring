@@ -1,16 +1,14 @@
-package edu.java.domain;
+package edu.java.domain.jdbc;
 
 import edu.java.dto.ChatResponse;
 import edu.java.dto.RegisterChatRequest;
 import java.util.List;
+import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+@AllArgsConstructor
 public class ChatsJdbcDao {
     private final JdbcTemplate jdbcTemplate;
-
-    public ChatsJdbcDao(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     public ChatResponse add(RegisterChatRequest chat) {
         String sql = "INSERT INTO chats (chat_id) VALUES (?)";
@@ -19,7 +17,7 @@ public class ChatsJdbcDao {
     }
 
     public void remove(long id) {
-        String sql = "DELETE FROM chats WHERE id = ?";
+        String sql = "DELETE FROM chats WHERE chat_id = ?";
         jdbcTemplate.update(sql, id);
     }
 
