@@ -2,10 +2,13 @@ package edu.java.clients;
 
 import java.time.OffsetDateTime;
 import org.springframework.http.MediaType;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Component
@@ -20,6 +23,8 @@ public class StackOverflowClient {
         this.webClient = webClientBuilder.baseUrl(baseUrl).build();
     }
 
+    @Retryable(value = {HttpStatusCodeException.class}, maxAttemptsExpression = "${retry.maxAttempts}",
+               backoff = @Backoff(delayExpression = "${retry.delay}"))
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public StackOverflowUpdate getQuestionUpdates(String questionId, OffsetDateTime since, OffsetDateTime until) {
         return webClient.get()
