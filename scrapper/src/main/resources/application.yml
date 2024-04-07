@@ -4,6 +4,10 @@ app:
     interval: 10000
     force-check-delay: 10s
 
+kafka:
+  bootstrap-servers: localhost:9092
+  topic-name: topic
+
 spring:
   application:
     name: scrapper
