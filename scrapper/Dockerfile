@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 
-COPY target/scrapper.jar /app/scrapper.jar
+COPY scrapper.jar /app/scrapper.jar
 
 WORKDIR /app
 
