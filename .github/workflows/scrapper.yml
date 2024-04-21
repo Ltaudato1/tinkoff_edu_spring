@@ -27,7 +27,7 @@ jobs:
         run: mvn -pl scrapper -am package
 
       - name: Docker Build
-        run: docker build -t scrapper:latest -f scrapper/Dockerfile
+        run: docker buildx build -t scrapper:latest -f scrapper/Dockerfile .
 
       - id: jacoco
         uses: madrapps/jacoco-report@v1.6.1
