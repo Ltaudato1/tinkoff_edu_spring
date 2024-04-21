@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 
-COPY bot.jar /app/bot.jar
+COPY ./bot.jar /app/bot.jar
 
 WORKDIR /app
 
