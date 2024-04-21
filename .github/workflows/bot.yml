@@ -26,7 +26,9 @@ jobs:
         run: mvn -pl bot -am package
 
       - name: Docker Build
+        if: github.event_name != 'pull_request'
         run: docker buildx build -t bot:latest -f bot/Dockerfile .
+
 
       - id: jacoco
         uses: madrapps/jacoco-report@v1.6.1

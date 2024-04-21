@@ -27,6 +27,7 @@ jobs:
         run: mvn -pl scrapper -am package
 
       - name: Docker Build
+        if: github.event_name != 'pull_request'
         run: docker buildx build -t scrapper:latest -f scrapper/Dockerfile .
 
       - id: jacoco
