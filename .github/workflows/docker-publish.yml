@@ -11,7 +11,7 @@ on:
 
 env:
   REGISTRY: ghcr.io/${{ github.repository_owner }}
-  IMAGE_NAME: bot # Или другое имя вашего Docker образа
+  IMAGE_NAME: bot
 
 jobs:
   build:

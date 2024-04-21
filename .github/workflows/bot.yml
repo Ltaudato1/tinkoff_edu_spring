@@ -25,9 +25,8 @@ jobs:
       - name: maven build
         run: mvn -pl bot -am package
 
-      - name: Docker Build
-        if: github.event_name != 'pull_request'
-        run: docker buildx build -t bot:latest -f bot/Dockerfile .
+      #- name: Docker Build
+      #  run: docker buildx build -t bot:latest -f bot/Dockerfile .
 
 
       - id: jacoco
