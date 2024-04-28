@@ -48,24 +48,19 @@ public class LinksJdbcDao {
     public Map<Long, Pair<String, OffsetDateTime>> findAll() {
         String sql =
             "SELECT lc.chat_id, l.url, l.last_update_time FROM links_chats lc INNER JOIN links l ON lc.link_id = l.id";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            Long id = rs.getLong("chat_id");
-            String url = rs.getString("url");
 
-            Timestamp timestamp = rs.getTimestamp("last_update_time");
-            Instant instant = timestamp.toInstant();
-            ZoneOffset offset = ZoneOffset.ofTotalSeconds(timestamp.getTimezoneOffset() * MINUTES_TO_SECONDS);
-            OffsetDateTime lastUpdateTime = OffsetDateTime.ofInstant(instant, offset);
-
-            return Map.entry(id, Pair.of(url, lastUpdateTime));
-        }).stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        return findBySqlQuery(sql);
     }
 
     public Map<Long, Pair<String, OffsetDateTime>> findStale() {
-        String sql = "SELECT lc.chat_id, l.url, l.last_update_time FROM links_chats lc " +
-            "INNER JOIN links l ON lc.link_id = l.id " +
-            "WHERE l.last_update_time <= NOW() - INTERVAL '10' MINUTE";
+        String sql = "SELECT lc.chat_id, l.url, l.last_update_time FROM links_chats lc "
+            + "INNER JOIN links l ON lc.link_id = l.id "
+            + "WHERE l.last_update_time <= NOW() - INTERVAL '10' MINUTE";
 
+        return findBySqlQuery(sql);
+    }
+
+    public Map<Long, Pair<String, OffsetDateTime>> findBySqlQuery(String sql) {
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             Long id = rs.getLong("chat_id");
             String url = rs.getString("url");

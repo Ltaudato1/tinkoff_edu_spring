@@ -2,7 +2,6 @@ package edu.java.clients.github;
 
 import java.time.OffsetDateTime;
 import java.util.List;
-import edu.java.clients.github.GitHubEvent;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
