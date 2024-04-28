@@ -5,15 +5,15 @@ import edu.java.dto.LinkResponse;
 import edu.java.dto.LinkUpdateRequest;
 import edu.java.service.LinkService;
 import java.time.OffsetDateTime;
-import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class JdbcLinkService implements LinkService {
-    private static final int CHECK_INTERVAL = 10;
     private final LinksJdbcDao linksJdbcDao;
 
     @Autowired
@@ -22,8 +22,8 @@ public class JdbcLinkService implements LinkService {
     }
 
     @Override
-    public LinkResponse addLink(LinkUpdateRequest linkRequest) {
-        return linksJdbcDao.add(linkRequest);
+    public void addLink(LinkUpdateRequest linkRequest) {
+        linksJdbcDao.add(linkRequest.getUrl(), linkRequest.getTgChatIds());
     }
 
     @Override
@@ -33,15 +33,21 @@ public class JdbcLinkService implements LinkService {
 
     @Override
     public List<LinkResponse> getAllLinks() {
-        return linksJdbcDao.findAll();
+        Map<Long, Pair<String, OffsetDateTime>> list = linksJdbcDao.findAll();
+        List<LinkResponse> result = new ArrayList<>();
+        for (Long id : list.keySet()) {
+            result.add(new LinkResponse(id, list.get(id).getLeft(), list.get(id).getRight()));
+        }
+        return result;
     }
 
     @Override
     public List<LinkResponse> getStaleLinks() {
-        List<LinkResponse> links = linksJdbcDao.findAll();
-
-        return linksJdbcDao.findAll().stream()
-            .filter(link -> ChronoUnit.MINUTES.between(link.getLastUpdateTime(), OffsetDateTime.now()) > CHECK_INTERVAL)
-            .collect(Collectors.toList());
+        Map<Long, Pair<String, OffsetDateTime>> list = linksJdbcDao.findStale();
+        List<LinkResponse> result = new ArrayList<>();
+        for (Long id : list.keySet()) {
+            result.add(new LinkResponse(id, list.get(id).getLeft(), list.get(id).getRight()));
+        }
+        return result;
     }
 }

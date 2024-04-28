@@ -1,7 +1,8 @@
-package edu.java.clients;
+package edu.java.clients.github;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import edu.java.clients.github.GitHubEvent;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +17,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class GitHubClient {
     private final WebClient webClient;
 
-    public GitHubClient(WebClient.Builder webClientBuilder, String baseUrl) {
-        this.webClient = webClientBuilder.baseUrl(baseUrl).build();
+    public GitHubClient(WebClient webClient) {
+        this.webClient = webClient;
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)

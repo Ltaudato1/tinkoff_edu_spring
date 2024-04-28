@@ -1,7 +1,5 @@
 package edu.java.domain;
 
-import edu.java.dto.ChatResponse;
-import edu.java.dto.RegisterChatRequest;
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -12,10 +10,9 @@ public class ChatsJdbcDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public ChatResponse add(RegisterChatRequest chat) {
+    public void add(Long id) {
         String sql = "INSERT INTO chats (chat_id) VALUES (?)";
-        jdbcTemplate.update(sql, chat.getId());
-        return new ChatResponse(chat.getId());
+        jdbcTemplate.update(sql, id);
     }
 
     public void remove(long id) {
@@ -23,13 +20,8 @@ public class ChatsJdbcDao {
         jdbcTemplate.update(sql, id);
     }
 
-    public List<ChatResponse> findAll() {
+    public List<Long> findAll() {
         String sql = "SELECT * FROM chats";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            ChatResponse chat = new ChatResponse(
-                rs.getLong("chat_id")
-            );
-            return chat;
-        });
+        return jdbcTemplate.query(sql, (rs, rowNum) -> rs.getLong("chat_id"));
     }
 }

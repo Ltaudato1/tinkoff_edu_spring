@@ -1,4 +1,4 @@
-package edu.java.clients;
+package edu.java.clients.stackoverflow;
 
 import java.time.OffsetDateTime;
 import org.springframework.http.MediaType;
@@ -16,8 +16,8 @@ public class StackOverflowClient {
 
     private final WebClient webClient;
 
-    public StackOverflowClient(WebClient.Builder webClientBuilder, String baseUrl) {
-        this.webClient = webClientBuilder.baseUrl(baseUrl).build();
+    public StackOverflowClient(WebClient webClient) {
+        this.webClient = webClient;
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)

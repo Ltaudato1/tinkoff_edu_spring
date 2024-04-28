@@ -4,6 +4,7 @@ import edu.java.domain.ChatsJdbcDao;
 import edu.java.dto.ChatResponse;
 import edu.java.dto.RegisterChatRequest;
 import edu.java.service.ChatService;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,8 @@ public class JdbcChatService implements ChatService {
     }
 
     @Override
-    public ChatResponse registerChat(RegisterChatRequest chatRequest) {
-        return chatsJdbcDao.add(chatRequest);
+    public void registerChat(RegisterChatRequest chatRequest) {
+        chatsJdbcDao.add(chatRequest.getId());
     }
 
     @Override
@@ -29,6 +30,11 @@ public class JdbcChatService implements ChatService {
 
     @Override
     public List<ChatResponse> getAllChats() {
-        return chatsJdbcDao.findAll();
+        List<Long> list = chatsJdbcDao.findAll();
+        List<ChatResponse> result = new ArrayList<>();
+        for (Long id : list) {
+            result.add(new ChatResponse(id));
+        }
+        return result;
     }
 }
