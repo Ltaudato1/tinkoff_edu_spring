@@ -1,13 +1,10 @@
 package edu.java.scrapper;
 
-import com.github.tomakehurst.wiremock.client.WireMock;
-import com.github.tomakehurst.wiremock.junit5.WireMockTest;
-import edu.java.clients.GitHubClient;
-import edu.java.clients.GitHubEvent;
+import edu.java.clients.github.GitHubClient;
+import edu.java.clients.github.GitHubEvent;
 import java.time.OffsetDateTime;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

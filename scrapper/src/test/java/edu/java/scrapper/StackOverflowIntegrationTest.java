@@ -1,15 +1,13 @@
 package edu.java.scrapper;
 
-import edu.java.clients.StackOverflowClient;
-import edu.java.clients.StackOverflowUpdate;
+import edu.java.clients.stackoverflow.StackOverflowClient;
+import edu.java.clients.stackoverflow.StackOverflowUpdate;
 import java.time.OffsetDateTime;
-import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.web.reactive.function.client.WebClientResponseException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
