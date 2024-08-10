@@ -1,10 +1,10 @@
 package edu.java.service.jdbc;
 
 import edu.java.BotClient;
-import edu.java.clients.GitHubClient;
-import edu.java.clients.GitHubEvent;
-import edu.java.clients.StackOverflowClient;
-import edu.java.clients.StackOverflowItem;
+import edu.java.clients.github.GitHubClient;
+import edu.java.clients.github.GitHubEvent;
+import edu.java.clients.stackoverflow.StackOverflowClient;
+import edu.java.clients.stackoverflow.StackOverflowItem;
 import edu.java.dto.LinkResponse;
 import edu.java.dto.LinkUpdateRequest;
 import edu.java.service.LinkService;
