@@ -1,15 +1,43 @@
 app:
   scheduler:
     enable: true
-    interval: 10s
+    interval: 10000
     force-check-delay: 10s
+
+kafka:
+  bootstrap-servers: localhost:9092
+  topic-name: topic
 
 spring:
   application:
     name: scrapper
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, prometheus
+  endpoint:
+    health:
+      show-details: always
+  server:
+    port: 8081
+  metrics:
+    web:
+      server:
+        auto-time-requests: true
+    distribution:
+      percentiles:
+        http.server.requests: [0.5, 0.75, 0.9, 0.95, 0.99]
+    tags:
+      application: ${spring.application.name}
 
 server:
   port: 8080
 
 logging:
   config: classpath:log4j2-plain.xml
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
