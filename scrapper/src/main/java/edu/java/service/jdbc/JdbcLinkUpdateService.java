@@ -1,10 +1,11 @@
 package edu.java.service.jdbc;
 
 import edu.java.BotClient;
-import edu.java.clients.GitHubClient;
-import edu.java.clients.GitHubEvent;
-import edu.java.clients.StackOverflowClient;
-import edu.java.clients.StackOverflowItem;
+import edu.java.clients.github.GitHubClient;
+import edu.java.clients.github.GitHubEvent;
+import edu.java.clients.stackoverflow.StackOverflowClient;
+import edu.java.clients.stackoverflow.StackOverflowItem;
+import edu.java.domain.jdbc.LinksJdbcDao;
 import edu.java.dto.LinkResponse;
 import edu.java.dto.LinkUpdateRequest;
 import edu.java.service.LinkService;
@@ -12,10 +13,11 @@ import edu.java.service.LinkUpdateService;
 import java.time.OffsetDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
 
+@Service
 public class JdbcLinkUpdateService implements LinkUpdateService {
-    private final JdbcTemplate jdbcTemplate;
+    private final LinksJdbcDao jdbcDao;
     private final LinkService linksService;
     private final GitHubClient gitHubClient;
     private final StackOverflowClient stackOverflowClient;
@@ -23,12 +25,12 @@ public class JdbcLinkUpdateService implements LinkUpdateService {
 
     @Autowired
     public JdbcLinkUpdateService(
-        JdbcTemplate jdbcTemplate,
+        LinksJdbcDao jdbcDao,
         LinkService linksService, GitHubClient gitHubClient,
         StackOverflowClient stackOverflowClient,
         BotClient botClient
     ) {
-        this.jdbcTemplate = jdbcTemplate;
+        this.jdbcDao = jdbcDao;
         this.linksService = linksService;
         this.gitHubClient = gitHubClient;
         this.stackOverflowClient = stackOverflowClient;
@@ -37,10 +39,7 @@ public class JdbcLinkUpdateService implements LinkUpdateService {
 
     @Override
     public int update(Long linkId) {
-        OffsetDateTime currentTime = OffsetDateTime.now();
-
-        String sql = "UPDATE links SET last_update_time = ? WHERE id = ?";
-        return jdbcTemplate.update(sql, currentTime, linkId);
+        return jdbcDao.update(linkId);
     }
 
     @Override
@@ -53,6 +52,7 @@ public class JdbcLinkUpdateService implements LinkUpdateService {
                     response.getLastUpdateTime(),
                     OffsetDateTime.now()
                 );
+
                 if (!eventList.isEmpty()) {
                     botClient.processUpdate(new LinkUpdateRequest(response.getUrl(), List.of(response.getId())));
                 }

@@ -1,4 +1,4 @@
-package edu.java.clients;
+package edu.java.clients.stackoverflow;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
