@@ -1,6 +1,6 @@
 package edu.java.service.jdbc;
 
-import edu.java.domain.LinksJdbcDao;
+import edu.java.domain.jdbc.LinksJdbcDao;
 import edu.java.dto.LinkResponse;
 import edu.java.dto.LinkUpdateRequest;
 import edu.java.service.LinkService;
@@ -10,9 +10,7 @@ import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-@Service
 public class JdbcLinkService implements LinkService {
     private final LinksJdbcDao linksJdbcDao;
 
